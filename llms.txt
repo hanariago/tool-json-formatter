@@ -1,0 +1,28 @@
+# JSON 포매터 (JSON Formatter)
+
+> 브라우저에서만 동작하는 무료 온라인 JSON 정렬·검증 도구. JSON을 붙여넣으면 즉시 들여쓰기 정렬과 유효성 검사를 해주고, 폴더·파일을 열어 JSON과 Markdown을 좌(원본)/우(보기)로 비교할 수 있다. 서버 전송 없음.
+
+URL: https://hanariago.github.io/tool-json-formatter/
+언어: 한국어, 영어 (UI 토글, `?lang=ko` / `?lang=en`)
+라이선스: MIT (자체 코드, 외부 라이브러리 없음)
+
+## 개요
+- 순수 HTML/CSS/JS 단일 파일, 외부 라이브러리 의존성 없음
+- 모든 처리는 클라이언트(브라우저)에서만 수행, 입력 데이터·파일은 서버로 전송되지 않음
+- 데스크톱/모바일 반응형
+
+## 기능
+- 붙여넣기 모드: JSON 입력 시 실시간 포매팅, 들여쓰기 2칸/4칸 선택, 유효성 검사 + 오류 줄·칸 위치 표시, 결과 복사, 입력 초기화, 최소화(Minify), 샘플 불러오기
+- 파일 열기 모드: 폴더 또는 다중 파일 선택 → 폴더 트리(접기/펴기, 기본 펼침)로 .json·.md 표시 → 클릭 시 좌측 원본 / 우측 보기(JSON은 포맷·검증, Markdown은 렌더링 미리보기)
+
+## 자주 묻는 질문
+- 데이터가 서버로 전송되나요? → 아니요. 브라우저 안에서만 처리됩니다.
+- 어떤 파일을 열 수 있나요? → .json 과 .md/.markdown. 폴더 단위 선택 가능.
+- 들여쓰기 2칸/4칸 차이? → 정렬 폭만 다르고 데이터는 동일.
+- 최소화(Minify)란? → 공백·줄바꿈을 제거해 한 줄로 압축.
+- 모바일 지원? → 예. 상하 분할 + 목록 드로어.
+
+## 링크
+- 도구: https://hanariago.github.io/tool-json-formatter/
+- 소스(GitHub): https://github.com/hanariago/tool-json-formatter
+- 다른 도구 모음: https://hanariago.github.io/tools-hub/
