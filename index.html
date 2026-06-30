@@ -330,6 +330,55 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+  /* ---------- First-visit guide modal ---------- */
+  .guide-overlay {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(26, 24, 20, 0.45);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .guide-overlay.show { display: flex; }
+  .guide-modal {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: 0 18px 50px rgba(26, 24, 20, 0.25);
+    width: 100%; max-width: 460px;
+    padding: 24px 24px 16px;
+    animation: guidePop .18s ease-out;
+  }
+  @keyframes guidePop { from { opacity: 0; transform: translateY(10px) scale(.98); } to { opacity: 1; transform: none; } }
+  .guide-x {
+    position: absolute; top: 10px; right: 12px;
+    appearance: none; border: none; background: transparent;
+    font-size: 1.5rem; line-height: 1; color: var(--ink-muted);
+    cursor: pointer; padding: 4px 8px; border-radius: 8px;
+  }
+  .guide-x:hover { color: var(--ink); background: var(--point-soft); }
+  .guide-modal h2 { margin: 0 6px 10px 0; font-size: 1.2rem; color: var(--point-dark); padding-right: 28px; }
+  .guide-intro { margin: 0 0 8px; color: var(--ink-soft); font-size: 0.9rem; font-weight: 600; }
+  .guide-list { margin: 0 0 14px; padding-left: 0; list-style: none; }
+  .guide-list li {
+    margin: 0 0 9px; padding: 10px 12px;
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 9px;
+    font-size: 0.9rem; line-height: 1.6; color: var(--ink-soft);
+  }
+  .guide-list li b { color: var(--ink); }
+  .guide-privacy {
+    margin: 0 0 16px; font-size: 0.84rem; color: var(--point-dark);
+    background: var(--point-soft); border-radius: 8px; padding: 9px 12px;
+  }
+  .guide-foot {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    border-top: 1px solid var(--line); padding-top: 13px;
+  }
+  .guide-check {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 0.84rem; color: var(--ink-soft); cursor: pointer; user-select: none;
+  }
+  .guide-check input { width: 15px; height: 15px; accent-color: var(--point); cursor: pointer; }
+
   .hidden { display: none !important; }
   .drawer-toggle { display: none; }
 
@@ -479,6 +528,24 @@
   <a class="hub" href="https://hanariago.github.io/tools-hub/" target="_blank" rel="noopener" data-i18n="hubLink">🔧 다른 도구 모음 →</a>
 </footer>
 
+<!-- ============ First-visit guide ============ -->
+<div class="guide-overlay" id="guide-overlay" role="dialog" aria-modal="true" aria-labelledby="guide-title">
+  <div class="guide-modal">
+    <button class="guide-x" id="guide-x" aria-label="Close">&times;</button>
+    <h2 id="guide-title" data-i18n="guideTitle">JSON 포매터에 오신 걸 환영해요 👋</h2>
+    <p class="guide-intro" data-i18n="guideIntro">여기서 할 수 있는 것:</p>
+    <ul class="guide-list">
+      <li><b data-i18n="guidePasteT">붙여넣기</b> — <span data-i18n="guidePasteD">JSON을 붙여넣으면 즉시 정렬·검증돼요. 들여쓰기(2/4칸), 최소화(Minify), 결과 복사도 가능.</span></li>
+      <li><b data-i18n="guideFilesT">파일 열기</b> — <span data-i18n="guideFilesD">폴더나 파일을 선택하면 JSON·Markdown이 목록으로 보이고, 클릭하면 왼쪽 원본 / 오른쪽 보기로 비교돼요.</span></li>
+    </ul>
+    <p class="guide-privacy" data-i18n="guidePrivacy">🔒 모든 처리는 브라우저 안에서만 — 어떤 파일도 서버로 전송되지 않아요.</p>
+    <div class="guide-foot">
+      <label class="guide-check"><input type="checkbox" id="guide-dont" /> <span data-i18n="guideDontToday">오늘 다시 보지 않기</span></label>
+      <button class="btn primary" id="guide-close" data-i18n="guideClose">닫기</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -529,6 +596,15 @@
       faqA5: "네. 모바일에서는 좌우 분할이 상하 분할로 바뀌고, 파일 목록은 접고 펼 수 있는 드로어로 표시됩니다.",
       footerOss: "오픈소스 · MIT 라이선스",
       hubLink: "🔧 다른 도구 모음 →",
+      guideTitle: "JSON 포매터에 오신 걸 환영해요 👋",
+      guideIntro: "여기서 할 수 있는 것:",
+      guidePasteT: "붙여넣기",
+      guidePasteD: "JSON을 붙여넣으면 즉시 정렬·검증돼요. 들여쓰기(2/4칸), 최소화(Minify), 결과 복사도 가능.",
+      guideFilesT: "파일 열기",
+      guideFilesD: "폴더나 파일을 선택하면 JSON·Markdown이 목록으로 보이고, 클릭하면 왼쪽 원본 / 오른쪽 보기로 비교돼요.",
+      guidePrivacy: "🔒 모든 처리는 브라우저 안에서만 — 어떤 파일도 서버로 전송되지 않아요.",
+      guideDontToday: "오늘 다시 보지 않기",
+      guideClose: "닫기",
       // dynamic
       st_valid: "✓ 유효한 JSON입니다.",
       st_errPrefix: "✕ JSON 오류",
@@ -590,6 +666,15 @@
       faqA5: "Yes. On mobile the side-by-side split becomes top/bottom, and the file list shows as a collapsible drawer.",
       footerOss: "Open source · MIT License",
       hubLink: "🔧 More tools →",
+      guideTitle: "Welcome to JSON Formatter 👋",
+      guideIntro: "What you can do here:",
+      guidePasteT: "Paste",
+      guidePasteD: "Paste JSON to format & validate instantly. Choose 2/4-space indent, minify, or copy the result.",
+      guideFilesT: "Open files",
+      guideFilesD: "Pick a folder or files to list JSON·Markdown, then click one to compare source (left) and view (right).",
+      guidePrivacy: "🔒 Everything runs in your browser — no file is ever uploaded.",
+      guideDontToday: "Don't show again today",
+      guideClose: "Close",
       st_valid: "✓ Valid JSON.",
       st_errPrefix: "✕ JSON error",
       st_line: function (n) { return "line " + n; },
@@ -1055,10 +1140,33 @@
     }
   });
 
+  /* ---------- First-visit guide ---------- */
+  const guideOverlay = $("guide-overlay");
+  function todayKey() {
+    const d = new Date();
+    return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+  }
+  function hideGuide() {
+    if ($("guide-dont").checked) {
+      try { localStorage.setItem("jf-guide-hide", todayKey()); } catch (e) {}
+    }
+    guideOverlay.classList.remove("show");
+  }
+  function maybeShowGuide() {
+    let hide = null;
+    try { hide = localStorage.getItem("jf-guide-hide"); } catch (e) {}
+    if (hide !== todayKey()) guideOverlay.classList.add("show");
+  }
+  $("guide-x").addEventListener("click", hideGuide);
+  $("guide-close").addEventListener("click", hideGuide);
+  guideOverlay.addEventListener("click", (e) => { if (e.target === guideOverlay) hideGuide(); });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && guideOverlay.classList.contains("show")) hideGuide(); });
+
   /* ---------- init ---------- */
   initLang();
   applyI18n();
   formatPaste();
+  maybeShowGuide();
 })();
 </script>
 </body>
