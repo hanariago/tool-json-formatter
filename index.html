@@ -1140,22 +1140,25 @@
     }
   });
 
-  /* ---------- First-visit guide ---------- */
+  /* ---------- First-visit guide (per '툴 개발 가이드' 표준) ----------
+   * 키 접두어 'jsonfmt' 필수: 모든 도구가 같은 origin(hanariago.github.io)이라
+   * localStorage/sessionStorage가 공유됨 → generic 키 쓰면 도구 간 충돌. */
+  const GUIDE_HIDE_KEY = "jsonfmtGuideHide";   // localStorage: '오늘 다시 보지 않기' 날짜
+  const GUIDE_SEEN_KEY = "jsonfmtGuideSeen";   // sessionStorage: 이번 세션에 본 적 있음
   const guideOverlay = $("guide-overlay");
-  function todayKey() {
-    const d = new Date();
-    return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-  }
+  function todayKey() { return new Date().toISOString().slice(0, 10); }
   function hideGuide() {
     if ($("guide-dont").checked) {
-      try { localStorage.setItem("jf-guide-hide", todayKey()); } catch (e) {}
+      try { localStorage.setItem(GUIDE_HIDE_KEY, todayKey()); } catch (e) {}
     }
+    try { sessionStorage.setItem(GUIDE_SEEN_KEY, "1"); } catch (e) {}
     guideOverlay.classList.remove("show");
   }
   function maybeShowGuide() {
-    let hide = null;
-    try { hide = localStorage.getItem("jf-guide-hide"); } catch (e) {}
-    if (hide !== todayKey()) guideOverlay.classList.add("show");
+    let hide = null, seen = null;
+    try { hide = localStorage.getItem(GUIDE_HIDE_KEY); } catch (e) {}
+    try { seen = sessionStorage.getItem(GUIDE_SEEN_KEY); } catch (e) {}
+    if (hide !== todayKey() && !seen) guideOverlay.classList.add("show");
   }
   $("guide-x").addEventListener("click", hideGuide);
   $("guide-close").addEventListener("click", hideGuide);
